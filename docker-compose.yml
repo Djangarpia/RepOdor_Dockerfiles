@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0.23
+    ports:
+      - '3302:3306'
+    environment:
+      MYSQL_PORT: "3306"
+      MYSQL_ROOT_PASSWORD: "piccione10"
+      MYSQL_DATABASE: "RepOdor"
+      MYSQL_USER: "santarpia"
+      MYSQL_PASSWORD: "piccione10"
+  web:
+    build: .
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:6001"
+    container_name: repodor
+    volumes:
+      - .:/catalog_service
+    ports:
+      - "6001:6001"
+    depends_on:
+      - db
